@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="แผนเที่ยวเมยหลี่เสวี่ยซาน (梅里雪山) 7 วัน สำหรับครอบครัวมีเด็ก/ผู้สูงอายุ งบประหยัด เน้นจุดชมวิวและปรับตัวกับความสูง">
+<title>เมยหลี่เสวี่ยซาน — แผนเที่ยวครอบครัว 7 วัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#1e3a5f;
+    --blue-2:#2d5580;
+    --blue-3:#4a6d94;
+    --white:#fafaf8;
+    --gold:#c9a84c;
+    --gold-soft:#e8d49a;
+    --ink:#23303f;
+    --muted:#5d6b7a;
+    --line:#e8e1cf;
+    --nav-h:60px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Sarabun','Leelawadee UI','Tahoma',system-ui,-apple-system,sans-serif;
+    background:var(--white);
+    color:var(--ink);
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .container{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+  section[id]{scroll-margin-top:calc(var(--nav-h) + 12px)}
+
+  /* ---------- NAV ---------- */
+  .navbar{position:sticky;top:0;z-index:100;background:var(--blue);box-shadow:0 2px 12px rgba(0,0,0,.18)}
+  .nav-inner{max-width:1080px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;min-height:var(--nav-h)}
+  .nav-brand{color:var(--white);font-weight:800;font-size:1.15rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px}
+  .nav-links{list-style:none;display:flex;gap:4px}
+  .nav-links a{
+    display:flex;align-items:center;min-height:44px;padding:0 14px;
+    color:#d6dfea;text-decoration:none;font-weight:500;border-radius:8px;font-size:1rem;
+    transition:color .2s,background .2s;white-space:nowrap;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.10)}
+  .nav-links a.active{color:var(--blue);background:var(--gold);font-weight:700}
+  .nav-toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:0;cursor:pointer}
+  .nav-toggle span{display:block;width:26px;height:3px;background:#fff;border-radius:2px;transition:.3s}
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+  @media(max-width:768px){
+    .nav-toggle{display:flex}
+    .nav-links{
+      position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;
+      background:var(--blue);gap:0;max-height:0;overflow:hidden;
+      transition:max-height .32s ease;box-shadow:0 10px 18px rgba(0,0,0,.22);
+    }
+    .nav-links.open{max-height:430px}
+    .nav-links li{border-top:1px solid rgba(255,255,255,.10)}
+    .nav-links a{padding:14px 22px;border-radius:0;min-height:48px;font-size:1.05rem}
+    .nav-links a.active{border-radius:0}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#142536 0%,#1e3a5f 28%,#3a5d86 54%,#c9a84c 86%,#e8d49a 100%);
+    min-height:clamp(440px,72vh,620px);
+    display:flex;align-items:flex-start;
+  }
+  .hero-sun{
+    position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);
+    width:210px;height:210px;border-radius:50%;
+    background:radial-gradient(circle,#fff7e0 0%,#f4dc92 45%,#ecc665 68%,rgba(236,198,101,0) 72%);
+    z-index:1;
+  }
+  .hero-content{position:relative;z-index:3;max-width:1080px;margin:0 auto;padding:46px 20px 0;width:100%}
+  .hero-eyebrow{color:var(--gold-soft);font-weight:700;letter-spacing:2px;font-size:.92rem;text-transform:uppercase}
+  .hero h1{color:#fff;font-size:clamp(2rem,6.2vw,3.4rem);font-weight:800;line-height:1.16;margin:10px 0;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+  .hero h1 .gold{color:var(--gold-soft)}
+  .hero-sub{color:#eef3f8;font-size:clamp(1.05rem,2.6vw,1.35rem);font-weight:500;text-shadow:0 1px 10px rgba(0,0,0,.35);max-width:640px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .hero-meta span{
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.30);color:#fff;
+    padding:9px 15px;border-radius:999px;font-size:.96rem;font-weight:600;
+    backdrop-filter:blur(4px);
+  }
+  .hero-note{
+    margin-top:18px;color:#fff;font-weight:600;background:rgba(20,37,54,.55);
+    display:inline-block;padding:9px 15px;border-radius:10px;font-size:.95rem;border-left:4px solid var(--gold);
+  }
+  .hero-mountains{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(90px,18vw,180px);z-index:2;display:block}
+  .hero-mountains .m-back{fill:#274b73}
+  .hero-mountains .m-front{fill:#16293f}
+  .hero-mountains .snow{fill:#f4f7fb}
+
+  /* ---------- OVERVIEW ---------- */
+  .overview{
+    max-width:840px;margin:34px auto 0;background:#fff;border-radius:16px;
+    padding:26px 28px;box-shadow:0 10px 28px rgba(30,58,95,.10);
+    border-top:4px solid var(--gold);font-size:1.08rem;color:var(--ink);
+  }
+  .overview b{color:var(--blue)}
+
+  /* ---------- SECTIONS ---------- */
+  .section{padding:56px 0}
+  .section.alt{background:#f3eee1}
+  .section h2{
+    font-size:clamp(1.55rem,4.2vw,2.25rem);color:var(--blue);font-weight:800;
+    margin-bottom:6px;display:flex;align-items:center;gap:12px;line-height:1.2;
+  }
+  .section h2::before{content:"";width:6px;height:1.05em;background:var(--gold);border-radius:3px;flex:0 0 auto}
+  .section .lead{color:var(--muted);margin-bottom:26px;font-size:1.05rem;max-width:760px}
+  .scroll-hint{display:none;color:var(--muted);font-size:.95rem;margin-bottom:8px}
+
+  /* ---------- TABLES ---------- */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px;border:1px solid var(--line);box-shadow:0 4px 16px rgba(30,58,95,.06)}
+  table{width:100%;border-collapse:collapse;background:#fff}
+  thead th{background:var(--blue);color:#fff;text-align:left;padding:14px 16px;font-weight:700;font-size:1rem;white-space:nowrap}
+  tbody td{padding:13px 16px;border-top:1px solid #ece6d6;vertical-align:top;font-size:1rem}
+  tbody tr:nth-child(even){background:#f7f3e9}
+  #itinerary table{min-width:780px}
+  #cost table{min-width:680px}
+  .num{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .day-badge{display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;background:var(--gold);color:var(--blue);font-weight:800;border-radius:50%;font-size:1.05rem}
+  tr.total-row td{background:var(--gold);color:var(--blue);font-weight:800;font-size:1.08rem;border-top:3px solid var(--blue)}
+
+  /* ---------- CARDS ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 4px 16px rgba(30,58,95,.06);border-top:4px solid var(--gold)}
+  .card .nights{display:inline-block;background:var(--blue);color:#fff;font-size:.85rem;font-weight:600;padding:4px 12px;border-radius:999px;margin-bottom:10px}
+  .card h3{color:var(--blue);font-size:1.22rem;margin-bottom:6px}
+  .card .tier{color:#a8862c;font-weight:700;font-size:.86rem;text-transform:uppercase;letter-spacing:.5px}
+  .card .price{font-weight:800;color:var(--blue);font-size:1.1rem;margin:12px 0;line-height:1.5}
+  .card ul{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:.98rem}
+  .card li{margin-bottom:5px}
+
+  /* ---------- FOOD ---------- */
+  .food-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
+  .food-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 4px 16px rgba(30,58,95,.06)}
+  .food-card h3{color:var(--blue);font-size:1.18rem;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--gold)}
+  .dish{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .dish:last-child{border-bottom:0}
+  .dish .name{flex:1}
+  .dish .price-tag{color:#a8862c;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+  /* ---------- ALERTS ---------- */
+  .alert{border-radius:16px;padding:22px 24px;margin-bottom:18px;border-left:6px solid}
+  .alert h3{margin-bottom:10px;font-size:1.22rem;display:flex;gap:10px;align-items:center}
+  .alert ul{padding-left:22px;margin-top:4px}
+  .alert li{margin-bottom:7px}
+  .alert.danger{background:#fdecdd;border-color:#d2691e;color:#5e3408}
+  .alert.danger h3{color:#b4530f}
+  .alert.warn{background:#fdf6df;border-color:#e0a91f;color:#5d4806}
+  .alert.warn h3{color:#9c7607}
+  .alert.tip{background:#eaf1f9;border-color:var(--blue);color:#1f3850}
+  .alert.tip h3{color:var(--blue)}
+  .badge-imp{font-size:.72rem;background:#b4530f;color:#fff;padding:3px 9px;border-radius:999px;font-weight:700;letter-spacing:.5px}
+  .note-line{margin-top:8px;font-size:.98rem;color:var(--muted)}
+
+  /* ---------- FOOTER ---------- */
+  .site-footer{background:var(--blue);color:#c9d4e1;text-align:center;padding:32px 20px;font-size:.95rem;line-height:1.8}
+  .site-footer .gold{color:var(--gold-soft);font-weight:700}
+  .site-footer a{color:var(--gold-soft)}
+
+  @media(max-width:768px){
+    .scroll-hint{display:block}
+    .section{padding:44px 0}
+    .overview{margin-top:26px;padding:22px 22px;font-size:1.04rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-brand">🏔️ เมยหลี่ทริป</a>
+    <button class="nav-toggle" aria-label="เปิด/ปิดเมนู" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#hero" class="active">ภาพรวม</a></li>
+      <li><a href="#itinerary">แผนเที่ยว</a></li>
+      <li><a href="#accommodation">ที่พัก</a></li>
+      <li><a href="#food">อาหาร</a></li>
+      <li><a href="#cost">ค่าใช้จ่าย</a></li>
+      <li><a href="#warnings">ข้อควรระวัง</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO + OVERVIEW -->
+<section id="hero">
+  <div class="hero">
+    <div class="hero-sun"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">แผนเที่ยวเฉพาะครอบครัว</p>
+      <h1>เมยหลี่เสวี่ยซาน<br><span class="gold">ตามล่าอาทิตย์ทองคาวาเกโบ</span></h1>
+      <p class="hero-sub">แบบไม่เร่งรีบ สำหรับครอบครัวที่มีเด็กและผู้สูงอายุ เน้นจุดชมวิวและความปลอดภัยจากความสูง</p>
+      <div class="hero-meta">
+        <span>📅 7 วัน 6 คืน</span>
+        <span>👨‍👩‍👧‍👦 ครอบครัว · เคยแพ้ความสูง</span>
+        <span>💰 งบประหยัด</span>
+      </div>
+      <p class="hero-note">⚠️ แนะนำเดินทาง ปลาย ต.ค.–กลาง มี.ค. (ชมยอดเขาชัดที่สุด)</p>
+    </div>
+    <svg class="hero-mountains" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path class="m-back" d="M0,320 L0,176 L240,86 L480,168 L720,64 L960,156 L1200,96 L1440,186 L1440,320 Z"/>
+      <path class="m-front" d="M0,320 L0,244 L180,158 L360,232 L600,132 L840,222 L1080,146 L1320,232 L1440,196 L1440,320 Z"/>
+      <path class="snow" d="M572,160 L600,132 L628,162 L612,154 L600,144 L588,153 Z"/>
+      <path class="snow" d="M1056,168 L1080,146 L1104,168 L1090,160 L1080,153 L1070,161 Z"/>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="overview">
+      แผน 7 วันนี้ออกแบบเพื่อ<b>ครอบครัวที่มีเด็กและผู้สูงอายุ</b>โดยเฉพาะ — ใช้แชงกรีล่า (香格里拉) เป็นฐาน
+      <b>ปรับตัวกับความสูง 2 คืน</b>ก่อนขึ้นจุดชมวิวเฟยไหลซื่อ (飞来寺) จึงปลอดภัยสำหรับผู้ที่เคยแพ้ความสูง
+      ทุกวันเดินไม่เกิน 4 ชั่วโมงและมีม้า/ทางเลือกช่วยเสมอ ไฮไลต์สูงสุดคือ
+      <b>อาทิตย์ขึ้นย้อมยอดคาวาเกโบ (卡瓦格博 6,740 ม.) เป็นสีทอง</b> ซึ่งจัดให้ลุ้นถึง 2 เช้าเพื่อเพิ่มโอกาสเห็นยอดเขา
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section id="itinerary" class="section">
+  <div class="container">
+    <h2>🗺️ แผนเที่ยวรายวัน</h2>
+    <p class="lead">เส้นทางเน้นจุดชมวิว ปรับตัวกับความสูงแบบค่อยเป็นค่อยไป และเผื่อโอกาสชมพระอาทิตย์ขึ้น 2 เช้า</p>
+    <p class="scroll-hint">เลื่อนตารางในแนวนอนเพื่อดูเพิ่ม →</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>วัน</th>
+            <th>เส้นทาง / กิจกรรม</th>
+            <th>เดิน</th>
+            <th>ไฮไลต์</th>
+            <th>ที่พัก</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="day-badge">1</span></td>
+            <td>บินถึงแชงกรีล่า (香格里拉, 3,200 ม. · สนามบิน DIG) → พักผ่อน <b>ปรับตัวกับความสูง</b> เดินเล่นเมืองเก่าตู๋เค่อจง (独克宗古城)</td>
+            <td class="num">~1–2 ชม.</td>
+            <td>กังหันมนต์ทองคำ (สถิติกินเนสส์) + วันปรับตัว</td>
+            <td>แชงกรีล่า</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">2</span></td>
+            <td>แชงกรีล่า — วัดซงจ้านหลิน (松赞林寺, 3,380 ม.) + ทะเลสาบนาพาไห่ (纳帕海) แบบสบายๆ</td>
+            <td class="num">~2–3 ชม.</td>
+            <td>“โปตาลาน้อย” วัดทิเบตงดงาม</td>
+            <td>แชงกรีล่า</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">3</span></td>
+            <td>นั่งรถสู่เฟยไหลซื่อ (飞来寺, ~3,400 ม.) ผ่านช่องเขาภูเขาหิมะไป๋หมาง (白马雪山, 4,292 ม. ⚠️), เบินจื่อหลาน (奔子栏), วัดตงจู๋หลิน (东竹林寺)</td>
+            <td class="num">ขับ ~4–5 ชม. + แวะถ่ายรูป</td>
+            <td>วิวเทือกเขา 13 ยอด ระหว่างทาง</td>
+            <td>เฟยไหลซื่อ</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">4</span></td>
+            <td><b>อาทิตย์ขึ้นครั้งที่ 1</b> ที่ลานชมวิวเฟยไหลซื่อ (เข้าฟรี) → ธารน้ำแข็งหมิงหย่ง (明永冰川) เดินทางไม้กระดาน/ขี่ม้า (<b>ไม่มีกระเช้า</b>)</td>
+            <td class="num">~2–4 ชม. (ขี่ม้าช่วย)</td>
+            <td>อาทิตย์ทอง 13 ยอด + ธารน้ำแข็งละติจูดต่ำสุดในจีน</td>
+            <td>เฟยไหลซื่อ</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">5</span></td>
+            <td><b>อาทิตย์ขึ้นครั้งที่ 2</b> (สำรองเผื่อเมฆบัง) → จุดชมวิวอู๋หนงติ่ง (雾浓顶) → บ่ายเดินทางกลับแชงกรีล่า</td>
+            <td class="num">ขับ ~4–5 ชม.</td>
+            <td>โอกาสสุดท้ายเห็นยอดเขา + วิวโค้งแม่น้ำ</td>
+            <td>แชงกรีล่า</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">6</span></td>
+            <td>แชงกรีล่า — อุทยานผู่ต๋าฉั่ว (普达措, ~3,500 ม. ⚠️) ทางเดินไม้กระดานเบาๆ <b>หรือ</b> พักผ่อน/ช้อปปิ้งเมืองเก่า</td>
+            <td class="num">~2–3 ชม.</td>
+            <td>ทะเลสาบ-ป่าสนแห่งแชงกรีล่า</td>
+            <td>แชงกรีล่า</td>
+          </tr>
+          <tr>
+            <td><span class="day-badge">7</span></td>
+            <td>อิสระช่วงเช้า → เดินทางกลับ (สนามบินแชงกรีล่า DIG)</td>
+            <td class="num">—</td>
+            <td>เก็บความประทับใจ</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOMMODATION -->
+<section id="accommodation" class="section alt">
+  <div class="container">
+    <h2>🏨 ที่พักแต่ละคืน</h2>
+    <p class="lead">เลือกระดับประหยัดที่สะอาด มีเครื่องทำความร้อน และอยู่ในทำเลที่เดินทางสะดวกสำหรับเด็ก/ผู้สูงอายุ</p>
+    <div class="cards">
+      <div class="card">
+        <span class="nights">คืน 1 · 2 · 5 · 6 — รวม 4 คืน</span>
+        <h3>แชงกรีล่า · เมืองเก่าตู๋เค่อจง (独克宗古城)</h3>
+        <p class="tier">ประหยัด · เกสต์เฮาส์</p>
+        <p class="price">~200–350 ¥/ห้อง/คืน (≈1,000–1,750 ฿)<br><small style="color:var(--muted);font-weight:600">ช่วงพีคอาจ 500–800+ ¥ ⚠️</small></p>
+        <ul>
+          <li>มีเครื่องทำความร้อนในห้อง (สำคัญ กลางคืนหนาว), น้ำอุ่น, Wi-Fi</li>
+          <li>ใจกลางเมืองเก่า เดินหาร้านอาหารง่าย</li>
+          <li>+ ค่าธรรมเนียมเมืองเก่า ~30 ¥/คน/คืน</li>
+          <li>ระดับความสูง 3,200 ม. เหมาะปรับตัวก่อนขึ้นที่สูงกว่า</li>
+          <li>⚠️ ชื่อ/ราคาควรตรวจสอบรีวิวก่อนจอง</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="nights">คืน 3 · 4 — รวม 2 คืน</span>
+        <h3>เฟยไหลซื่อ (飞来寺) · ใกล้ลานชมวิว</h3>
+        <p class="tier">ประหยัด–กลาง</p>
+        <p class="price">ห้องไม่มีวิว ~250–450 ¥<br>ห้องวิวยอดเขา ~450–800 ¥ (พีค 800–1,200+) ⚠️</p>
+        <ul>
+          <li>ตื่นมาชมอาทิตย์ขึ้นได้สะดวก ไม่ต้องพาเด็ก/ผู้สูงอายุเดินไกลตอนเช้ามืด</li>
+          <li>หากงบจำกัด พักห้องธรรมดาแล้วเดินไปลานชมวิวสาธารณะ (เข้าฟรี) ที่อยู่ใกล้ๆ</li>
+          <li>⚠️ ยืนยันทิศห้อง/วิวและราคากับที่พักก่อนจอง</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD -->
+<section id="food" class="section">
+  <div class="container">
+    <h2>🍜 ของกินเด็ดตามเส้นทาง</h2>
+    <p class="lead">ราคาเป็นค่าประมาณต่อจาน/ต่อคน อาจเปลี่ยนตามฤดูและร้าน</p>
+    <div class="food-grid">
+      <div class="food-card">
+        <h3>แชงกรีล่า (香格里拉)</h3>
+        <div class="dish"><span class="name">หม้อไฟเนื้อจามรี (牦牛肉火锅)</span><span class="price-tag">¥80–150</span></div>
+        <div class="dish"><span class="name">ชาเนยจามรี (酥油茶)</span><span class="price-tag">¥15–30</span></div>
+        <div class="dish"><span class="name">จัมปา/ข้าวบาร์เลย์ (糌粑)</span><span class="price-tag">¥10–30</span></div>
+        <div class="dish"><span class="name">เห็ดมัตสึทาเกะ (松茸) ตามฤดู ก.ค.–ก.ย. ⚠️</span><span class="price-tag">ตามตลาด</span></div>
+      </div>
+      <div class="food-card">
+        <h3>เบินจื่อหลาน (奔子栏)</h3>
+        <div class="dish"><span class="name">หมูพีพา (琵琶肉) หมูหมักสไตล์ทิเบต</span><span class="price-tag">¥30–60</span></div>
+      </div>
+      <div class="food-card">
+        <h3>เต๋อชิน / เฟยไหลซื่อ (德钦/飞来寺)</h3>
+        <div class="dish"><span class="name">ไก่ตุ๋นสมุนไพรทิเบต / สตูว์พื้นเมือง</span><span class="price-tag">¥50–90</span></div>
+        <div class="dish"><span class="name">ขนมวอลนัท-เมล็ดสน</span><span class="price-tag">¥10–25</span></div>
+      </div>
+      <div class="food-card">
+        <h3>หมิงหย่ง (明永)</h3>
+        <div class="dish"><span class="name">อาหารบ้านทิเบตทำเอง (ข้าว + ผัด)</span><span class="price-tag">¥30–60</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COST -->
+<section id="cost" class="section alt">
+  <div class="container">
+    <h2>💰 สรุปค่าใช้จ่าย (ต่อคน)</h2>
+    <p class="lead">งบประหยัด · 6 คืน · เฉพาะค่าใช้จ่ายหน้างาน ไม่รวมตั๋วเครื่องบินระหว่างประเทศ · คิดที่ครอบครัวแชร์ห้องกัน</p>
+    <p class="scroll-hint">เลื่อนตารางในแนวนอนเพื่อดูเพิ่ม →</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>หมวด</th>
+            <th>ต่ำสุด (¥)</th>
+            <th>สูงสุด (¥)</th>
+            <th>≈ บาท</th>
+            <th>หมายเหตุ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ที่พัก</td>
+            <td class="num">700</td>
+            <td class="num">1,300</td>
+            <td class="num">3,500–6,500</td>
+            <td>6 คืน · หารต่อคนจากการแชร์ห้อง</td>
+          </tr>
+          <tr>
+            <td>อาหาร</td>
+            <td class="num">450</td>
+            <td class="num">850</td>
+            <td class="num">2,250–4,250</td>
+            <td>~60–120 ¥/คน/วัน ร้านพื้นเมือง</td>
+          </tr>
+          <tr>
+            <td>ค่าเข้า / ขี่ม้า</td>
+            <td class="num">200</td>
+            <td class="num">550</td>
+            <td class="num">1,000–2,750</td>
+            <td>ซงจ้านหลิน ~75 · หมิงหย่ง ~130 (+ม้า ~230) · เฟยไหลซื่อ ฟรี · ผู่ต๋าฉั่ว ~138 (ทางเลือก)</td>
+          </tr>
+          <tr>
+            <td>เดินทางในพื้นที่</td>
+            <td class="num">300</td>
+            <td class="num">650</td>
+            <td class="num">1,500–3,250</td>
+            <td>บัสแชงกรีล่า↔เต๋อชิน ~62–64 ¥/เที่ยว · แท็กซี่ท้องถิ่น · รับส่งสนามบิน</td>
+          </tr>
+          <tr>
+            <td>เบ็ดเตล็ด</td>
+            <td class="num">200</td>
+            <td class="num">450</td>
+            <td class="num">1,000–2,250</td>
+            <td>น้ำ/ขนม · ออกซิเจนกระป๋อง · ค่าธรรมเนียมเมืองเก่า ~30 ¥/คืน · ซิม/ทิป/ของฝาก</td>
+          </tr>
+          <tr class="total-row">
+            <td>รวมทั้งหมด</td>
+            <td class="num">1,850</td>
+            <td class="num">3,800</td>
+            <td class="num">9,250–19,000</td>
+            <td>อยู่ในกรอบงบประหยัด ✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-line">* ประมาณการบาทใช้อัตรา 1 หยวน ≈ 5 บาท · ราคาตั๋ว/ที่พักในจีนเปลี่ยนตามฤดูกาล ควรตรวจสอบอีกครั้งก่อนเดินทาง</p>
+    <p class="note-line">* หากต้องการ <b>เช่าเหมารถตู้ส่วนตัว</b> (สบายกว่ามากบนถนนภูเขา) ~800–1,500 ¥/วัน ตามขนาดรถ หารกันในกลุ่ม — แนะนำอย่างยิ่งสำหรับเด็ก/ผู้สูงอายุ</p>
+  </div>
+</section>
+
+<!-- WARNINGS & TIPS -->
+<section id="warnings" class="section">
+  <div class="container">
+    <h2>⚠️ ข้อควรระวัง &amp; ทิปส์</h2>
+    <p class="lead">หัวใจของทริปนี้คือการจัดการความสูงและสภาพอากาศ โปรดอ่านก่อนวางแผนจริง</p>
+
+    <div class="alert danger">
+      <h3>🫁 ความสูง <span class="badge-imp">สำคัญที่สุด</span></h3>
+      <ul>
+        <li><b>พบแพทย์ก่อนเดินทาง</b> และพิจารณายา Diamox (acetazolamide) เริ่ม 1–2 วันก่อนขึ้นที่สูง (ตามคำแนะนำแพทย์) เพราะเคยมีอาการแพ้ความสูง</li>
+        <li>ปรับตัวค่อยเป็นค่อยไป: พักแชงกรีล่า (3,200 ม.) 2 คืนก่อนขึ้นเฟยไหลซื่อ — แนะนำ <b>บินเข้าลี่เจียง (丽江, 2,400 ม.) แล้วนั่งรถไฟ</b> (เปิดปี 2023, ~1–2 ชม.) ขึ้นแชงกรีล่า เพื่อปรับตัวนุ่มนวลที่สุด</li>
+        <li>วันแรกห้ามออกแรงหนัก งดแอลกอฮอล์ ดื่มน้ำมากๆ นอนให้พอ</li>
+        <li>ช่องเขาไป๋หมาง 4,292 ม. (แค่ผ่าน ไม่ค้างคืน) และผู่ต๋าฉั่ว ~3,500 ม. — มีออกซิเจนกระป๋องติดตัว</li>
+        <li><b>หมิงหย่งไม่มีกระเช้า</b> ทางขึ้นจุดชมธารน้ำแข็งชันและกลับขึ้นที่สูง ~3,400 ม. → ควรขี่ม้าหรือชมจากจุดล่าง ไม่ฝืนเดินขึ้นเต็มเส้น</li>
+        <li><b>สัญญาณอันตราย</b> (ปวดหัวรุนแรง อาเจียน หายใจลำบาก เดินเซ) = ลงที่ต่ำทันที อย่าฝืน</li>
+      </ul>
+    </div>
+
+    <div class="alert warn">
+      <h3>🌤️ ฤดูกาล &amp; สภาพถนน</h3>
+      <ul>
+        <li>ชมยอดเขาชัดที่สุด <b>ปลาย ต.ค.–กลาง มี.ค.</b> (พ.ย.–ก.พ. ฟ้าใสสุด)</li>
+        <li>หน้าฝน (มิ.ย.–ก.ย.): เมฆบ่อย โอกาสเห็นคาวาเกโบน้อย (ลุ้นดวง) และ ⚠️ <b>เสี่ยงดินถล่มบนถนน G214 ใกล้เต๋อชิน</b> — ต้องเช็กสภาพถนนและเผื่อเวลา · ข้อดี: หุบเขาเขียว คนน้อย เป็นฤดูเห็ดมัตสึทาเกะ</li>
+        <li>แผนนี้จัดให้ลุ้นอาทิตย์ขึ้น <b>2 เช้า</b> เพื่อเพิ่มโอกาสเห็นยอดเขา</li>
+      </ul>
+    </div>
+
+    <div class="alert tip">
+      <h3>🎒 ของต้องเตรียม (5 อันดับแรก)</h3>
+      <ul>
+        <li>เสื้อดาวน์ + เสื้อเลเยอร์ (เช้ามืดหนาวมากแม้หน้าร้อน)</li>
+        <li>ยาแพ้ความสูง (Diamox ตามแพทย์สั่ง) + ยาแก้ปวดหัว + ออกซิเจนกระป๋อง</li>
+        <li>ชุดกันฝน + รองเท้าเดินกันลื่น</li>
+        <li>ครีมกันแดด SPF สูง + แว่นกันแดด + หมวก (UV ที่สูงแรงมาก)</li>
+        <li>ยาประจำตัวเด็ก/ผู้สูงอายุ + ยาแก้เมารถ + กระบอกน้ำ</li>
+      </ul>
+    </div>
+
+    <div class="alert tip">
+      <h3>✨ กิจกรรมเสริม (ถ้ามีเวลา)</h3>
+      <ul>
+        <li><b>หมู่บ้านยู่เปิง (雨崩)</b> — หุบเขาศักดิ์สิทธิ์ เฉพาะสมาชิกที่ฟิต ⚠️ ทางเข้า Xidang ปิดซ่อม (2025) ต้องเข้าทาง Ninong เดิน ~5–6 ชม. ผ่านช่องเขา 3,680 ม. — <b>ไม่แนะนำสำหรับกลุ่มที่เคยแพ้ความสูง</b> และสถานะเปลี่ยนบ่อย ควรเช็กก่อนไป</li>
+        <li><b>ทะเลสาบนาพาไห่ (纳帕海)</b> ขี่ม้า/รถม้าเบาๆ เหมาะกับทุกวัย เสริมในวันแชงกรีล่า</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>🏔️ <span class="gold">เมยหลี่เสวี่ยซาน (梅里雪山)</span> — แผนเที่ยวครอบครัว 7 วัน 6 คืน</p>
+  <p>รายการที่มี ⚠️ และราคาทั้งหมดเป็น<b>ค่าประมาณ</b> ควรตรวจสอบอีกครั้งก่อนเดินทาง · อัตราแลกเปลี่ยนอ้างอิง 1 หยวน ≈ 5 บาท</p>
+</footer>
+
+<script>
+  (function(){
+    var toggle = document.querySelector('.nav-toggle');
+    var menu = document.querySelector('.nav-links');
+    var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
+
+    // Hamburger toggle
+    toggle.addEventListener('click', function(){
+      var open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Close mobile menu after choosing a link
+    links.forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Active section highlight on scroll
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+    function setActive(id){
+      links.forEach(function(a){
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+    if ('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){ setActive(entry.target.id); }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      sections.forEach(function(s){ observer.observe(s); });
+    }
+  })();
+</script>
+
+</body>
+</html>
