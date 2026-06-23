@@ -1706,6 +1706,8 @@
     /* interactive OSM map (Leaflet) — graceful: SVG schematic stays if Leaflet/tiles fail */
     try{
       if(window.L && document.getElementById('map')){
+        var rm=document.querySelector('.routemap');
+        rm.classList.add('maplive');           /* show container FIRST so Leaflet measures size + fitBounds works (else it zooms to max) */
         var P=[[25.0389,102.7183,'① คุนหมิง 昆明','1,900 ม.'],[27.8251,99.7078,'② แชงกรีล่า 香格里拉','3,200 ม. · ฐานปรับตัว 2 คืน'],[28.4479,98.8813,'③ เฟยไหลซื่อ 飞来寺','3,400 ม. · ชมอาทิตย์ทอง'],[28.4522,98.7372,'④ หมิงหย่ง 明永','2,200 ม. · ธารน้ำแข็ง']];
         var mp=L.map('map',{scrollWheelZoom:false});
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mp);
@@ -1716,11 +1718,14 @@
             .bindTooltip(String(i+1),{permanent:true,direction:'center',className:'rm-mk'})
             .bindPopup('<b>'+p[2]+'</b><br>'+p[3]);
         });
-        mp.fitBounds(ll,{padding:[42,42]});
-        document.querySelector('.routemap').classList.add('maplive');
-        setTimeout(function(){mp.invalidateSize();},200);
+        var bounds=L.latLngBounds(ll);
+        var fit=function(){mp.invalidateSize(false);mp.fitBounds(bounds,{padding:[30,30]});};
+        fit();mp.whenReady(fit);setTimeout(fit,150);setTimeout(fit,600);
       }
-    }catch(err){}
+    }catch(err){
+      var rmf=document.querySelector('.routemap');
+      if(rmf)rmf.classList.remove('maplive');   /* any failure -> fall back to the SVG schematic */
+    }
 
     /* open all <details> for printing */
     var printState=[];
