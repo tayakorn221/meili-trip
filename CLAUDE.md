@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Thai-language, editorial/magazine-style travel itinerary for **เมยหลี่เสวี่ยซาน (Meili Snow Mountain / 梅里雪山 / Kawagebo)**, Yunnan, China — a 7-day family trip plan (15–21 Nov 2026). It is a **static site with no build step, no dependencies, and no framework**: the whole site is a single self-contained `index.html` with inline `<style>` and inline `<script>`.
+A Thai-language, editorial/magazine-style travel itinerary for **เมยหลี่เสวี่ยซาน (Meili Snow Mountain / 梅里雪山 / Kawagebo)**, Yunnan, China — a 7-day family trip plan (15–21 Nov 2026). It is a **static site with no build step and no framework**: the whole site is a single self-contained `index.html` with inline `<style>` and inline `<script>`. The only third-party library is **Leaflet** (loaded from CDN) for the interactive route map, which degrades gracefully to an inline SVG when it can't load.
 
 ## Running & deploying
 
@@ -26,14 +26,15 @@ A Thai-language, editorial/magazine-style travel itinerary for **เมยหล
 
 ## Architecture
 
-The site is one self-contained file. The design system lives in an inline `<style>` (a token `:root` block plus nav/hero/section CSS) and all behavior lives in a single inline `<script>` at the end of `<body>`. There are no external CSS/JS assets — only Google Fonts and a few remote images (hero/photo bands) are loaded from CDNs.
+The site is one self-contained file. The design system lives in an inline `<style>` (a token `:root` block plus nav/hero/section CSS) and all behavior lives in a single inline `<script>` at the end of `<body>`. External assets are all from CDNs: Google Fonts, a few remote images (hero/photo bands), and **Leaflet (CSS+JS) + OpenStreetMap tiles** for the interactive route map. Everything else is inline.
 
 ### Design system (CSS custom properties in `:root`)
 
 - **Palette:** `--paper`/`--paper-2` (warm off-white backgrounds), `--ink`/`--ink-2` (near-black text), `--clay` (terracotta accent, used for kickers/numerals/active states), `--gold`. `--verify-bg`/`--verify-ink` style the ⚠️ price-estimate badges.
 - **Three font roles:** `--serif` = Noto Serif Thai (Thai headings/body emphasis), `--fig` = Fraunces (Latin figures, big numerals, kickers), `--sans` = IBM Plex Sans Thai (body text). Each has a `Leelawadee UI` / system fallback so Thai still renders if Google Fonts fails to load.
 - `--nav-h` (60px) is the sticky-nav height; `section[id]`/`header[id]` use it as `scroll-margin-top` so anchored scrolling clears the nav.
-- All newer components (grouped nav dropdowns, SOS panel, `<details>` accordions, tap-to-copy phrasebook rows, packing checklist, comparison/weather tables, dark group dividers, and the overview **inline SVG route map** ①→④) reuse these same tokens — no new colors or fonts. The route map is hand-drawn SVG (offline, no map tiles) with per-stop "open real map" links to Amap.
+- All newer components (grouped nav dropdowns, SOS panel, `<details>` accordions, tap-to-copy phrasebook rows, packing checklist, comparison/weather tables, dark group dividers, and the overview **route map** ①→④) reuse these same tokens — no new colors or fonts.
+- **Route map (overview):** a **Leaflet + OpenStreetMap interactive map on screen** (4 numbered clay `circleMarker`s + dashed route polyline, fit to bounds) with a **hand-drawn inline SVG schematic as the print/offline fallback**. The script adds `.routemap.maplive` only after Leaflet initializes — which CSS uses to show `#map` and hide the SVG; `@media print` reverses it (SVG prints, map hidden). If Leaflet/tiles fail to load, the SVG simply stays. Per-stop "open real map" links go to Amap.
 
 ### Navigation & interaction (the end-of-body IIFE script)
 

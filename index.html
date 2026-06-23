@@ -21,6 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Noto+Serif+Thai:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root{
     --paper:#f4f0e7;
@@ -125,9 +126,15 @@
   .fig-item .fl{color:var(--ink-2);font-size:.96rem;margin-top:8px}
   @media(max-width:620px){.figs{grid-template-columns:1fr;gap:22px}}
 
-  /* ---------- ROUTE MAP (inline SVG, offline) ---------- */
+  /* ---------- ROUTE MAP (Leaflet interactive on screen + SVG schematic fallback/print) ---------- */
   .routemap{margin-top:44px;border:1px solid var(--line);background:linear-gradient(160deg,#efe8d8,#e7ddc8);border-radius:3px;overflow:hidden}
   .routemap svg{display:block;width:100%;height:auto}
+  .routemap-live{display:none;height:440px;width:100%}
+  .routemap.maplive .routemap-live{display:block}
+  .routemap.maplive svg{display:none}
+  .leaflet-container{background:var(--paper-2)!important;font-family:var(--sans)!important}
+  .rm-mk{background:transparent!important;border:0!important;box-shadow:none!important;color:#fff;font-family:var(--fig);font-weight:600;font-size:13px;text-align:center}
+  @media(max-width:620px){.routemap-live{height:340px}}
   .rm-route{fill:none;stroke:var(--clay);stroke-width:2.5;stroke-dasharray:7 6;opacity:.85}
   .rm-pin{fill:var(--clay)}
   .rm-num{fill:#fff;font-family:var(--fig);font-size:15px;font-weight:600;text-anchor:middle}
@@ -403,6 +410,8 @@
     .acc-body,.dbody{display:block!important}
     .acc,.day,.attraction,.stay,.block{break-inside:avoid}
     .routemap{background:#fff!important;border:1px solid #999}
+    .routemap-live{display:none!important}
+    .routemap.maplive svg{display:block!important}
     a{color:var(--ink)!important;text-decoration:none}
     .maplink,.book-btn{border:1px solid #999;color:var(--ink)!important}
     .footer{background:#fff;color:#333;border-top:2px solid var(--ink)}
@@ -500,12 +509,13 @@
     </div>
 
     <div class="routemap">
+      <div id="map" class="routemap-live" role="application" aria-label="แผนที่เส้นทาง OpenStreetMap (โต้ตอบได้ — ซูม/เลื่อน/แตะหมุด)"></div>
       <svg viewBox="0 0 820 430" role="img" aria-label="แผนผังเส้นทาง คุนหมิง → แชงกรีล่า → เฟยไหลซื่อ → ธารน้ำแข็งหมิงหย่ง">
         <polyline class="rm-route" points="690,355 425,250 210,118 105,150"/>
         <!-- leg labels -->
         <text class="rm-leg" x="580" y="300" text-anchor="middle">บิน ~1 ชม. / รถไฟตรง ~4.5–6 ชม.</text>
-        <text class="rm-leg" x="355" y="165" text-anchor="middle">~182 กม. · ขับ ~4–4.5 ชม.</text>
-        <text class="rm-leg" x="355" y="183" text-anchor="middle">ผ่านช่องเขาไป๋หม่า 4,290 ม.</text>
+        <text class="rm-leg" x="385" y="150" text-anchor="middle">~182 กม. · ขับ ~4–4.5 ชม.</text>
+        <text class="rm-leg" x="385" y="166" text-anchor="middle">ช่องเขาไป๋หม่า 4,290 ม.</text>
         <text class="rm-leg" x="165" y="106" text-anchor="middle">~40 กม. · ~1 ชม.</text>
         <!-- pins -->
         <g><circle class="rm-pin" cx="690" cy="355" r="15"/><text class="rm-num" x="690" y="360">1</text>
@@ -1613,6 +1623,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite">คัดลอกแล้ว</div>
 
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   (function(){
     var burger=document.querySelector('.burger');
@@ -1690,6 +1701,25 @@
       });
       var reset=document.getElementById('chkReset');
       if(reset)reset.addEventListener('click',function(){boxes.forEach(function(c){c.checked=false;localStorage.removeItem('meili-'+c.id);});});
+    }catch(err){}
+
+    /* interactive OSM map (Leaflet) — graceful: SVG schematic stays if Leaflet/tiles fail */
+    try{
+      if(window.L && document.getElementById('map')){
+        var P=[[25.0389,102.7183,'① คุนหมิง 昆明','1,900 ม.'],[27.8251,99.7078,'② แชงกรีล่า 香格里拉','3,200 ม. · ฐานปรับตัว 2 คืน'],[28.4479,98.8813,'③ เฟยไหลซื่อ 飞来寺','3,400 ม. · ชมอาทิตย์ทอง'],[28.4522,98.7372,'④ หมิงหย่ง 明永','2,200 ม. · ธารน้ำแข็ง']];
+        var mp=L.map('map',{scrollWheelZoom:false});
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mp);
+        var ll=P.map(function(p){return [p[0],p[1]];});
+        L.polyline(ll,{color:'#9a3b27',weight:3,dashArray:'7 7',opacity:.85}).addTo(mp);
+        P.forEach(function(p,i){
+          L.circleMarker([p[0],p[1]],{radius:12,color:'#fff',weight:2,fillColor:'#9a3b27',fillOpacity:1}).addTo(mp)
+            .bindTooltip(String(i+1),{permanent:true,direction:'center',className:'rm-mk'})
+            .bindPopup('<b>'+p[2]+'</b><br>'+p[3]);
+        });
+        mp.fitBounds(ll,{padding:[42,42]});
+        document.querySelector('.routemap').classList.add('maplive');
+        setTimeout(function(){mp.invalidateSize();},200);
+      }
     }catch(err){}
 
     /* open all <details> for printing */
