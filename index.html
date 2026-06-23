@@ -128,10 +128,10 @@
 
   /* ---------- ROUTE MAP (Leaflet interactive on screen + SVG schematic fallback/print) ---------- */
   .routemap{margin-top:44px;border:1px solid var(--line);background:linear-gradient(160deg,#efe8d8,#e7ddc8);border-radius:3px;overflow:hidden}
-  .routemap svg{display:block;width:100%;height:auto}
+  .routemap > svg{display:block;width:100%;height:auto}
   .routemap-live{display:none;height:440px;width:100%}
   .routemap.maplive .routemap-live{display:block}
-  .routemap.maplive svg{display:none}
+  .routemap.maplive > svg{display:none}
   .leaflet-container{background:var(--paper-2)!important;font-family:var(--sans)!important}
   .rm-mk{background:transparent!important;border:0!important;box-shadow:none!important;color:#fff;font-family:var(--fig);font-weight:600;font-size:13px;text-align:center}
   @media(max-width:620px){.routemap-live{height:340px}}
@@ -411,7 +411,7 @@
     .acc,.day,.attraction,.stay,.block{break-inside:avoid}
     .routemap{background:#fff!important;border:1px solid #999}
     .routemap-live{display:none!important}
-    .routemap.maplive svg{display:block!important}
+    .routemap.maplive > svg{display:block!important}
     a{color:var(--ink)!important;text-decoration:none}
     .maplink,.book-btn{border:1px solid #999;color:var(--ink)!important}
     .footer{background:#fff;color:#333;border-top:2px solid var(--ink)}
@@ -1707,24 +1707,30 @@
     try{
       if(window.L && document.getElementById('map')){
         var rm=document.querySelector('.routemap');
-        rm.classList.add('maplive');           /* show container FIRST so Leaflet measures size + fitBounds works (else it zooms to max) */
+        rm.classList.add('maplive');           /* show container so it has layout size */
         var P=[[25.0389,102.7183,'① คุนหมิง 昆明','1,900 ม.'],[27.8251,99.7078,'② แชงกรีล่า 香格里拉','3,200 ม. · ฐานปรับตัว 2 คืน'],[28.4479,98.8813,'③ เฟยไหลซื่อ 飞来寺','3,400 ม. · ชมอาทิตย์ทอง'],[28.4522,98.7372,'④ หมิงหย่ง 明永','2,200 ม. · ธารน้ำแข็ง']];
-        var mp=L.map('map',{scrollWheelZoom:false});
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mp);
         var ll=P.map(function(p){return [p[0],p[1]];});
-        L.polyline(ll,{color:'#9a3b27',weight:3,dashArray:'7 7',opacity:.85}).addTo(mp);
-        P.forEach(function(p,i){
-          L.circleMarker([p[0],p[1]],{radius:12,color:'#fff',weight:2,fillColor:'#9a3b27',fillOpacity:1}).addTo(mp)
-            .bindTooltip(String(i+1),{permanent:true,direction:'center',className:'rm-mk'})
-            .bindPopup('<b>'+p[2]+'</b><br>'+p[3]);
-        });
         var bounds=L.latLngBounds(ll);
-        var fit=function(){mp.invalidateSize(false);mp.fitBounds(bounds,{padding:[30,30]});};
-        fit();mp.whenReady(fit);setTimeout(fit,150);setTimeout(fit,600);
+        var build=function(){
+          try{
+            var mp=L.map('map',{scrollWheelZoom:false});
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mp);
+            mp.fitBounds(bounds,{padding:[30,30]});            /* set view BEFORE adding vectors so they project at the right size */
+            L.polyline(ll,{color:'#9a3b27',weight:3,dashArray:'7 7',opacity:.85}).addTo(mp);
+            P.forEach(function(p,i){
+              L.circleMarker([p[0],p[1]],{radius:12,color:'#fff',weight:2,fillColor:'#9a3b27',fillOpacity:1}).addTo(mp)
+                .bindTooltip(String(i+1),{permanent:true,direction:'center',className:'rm-mk'})
+                .bindPopup('<b>'+p[2]+'</b><br>'+p[3]);
+            });
+            setTimeout(function(){mp.invalidateSize(false);mp.fitBounds(bounds,{padding:[30,30]});},250);
+          }catch(e){rm.classList.remove('maplive');}
+        };
+        /* defer the build one macrotask so the just-shown container is laid out first (setTimeout fires reliably even in a background tab, unlike rAF) */
+        setTimeout(build,30);
       }
     }catch(err){
       var rmf=document.querySelector('.routemap');
-      if(rmf)rmf.classList.remove('maplive');   /* any failure -> fall back to the SVG schematic */
+      if(rmf)rmf.classList.remove('maplive');
     }
 
     /* open all <details> for printing */
