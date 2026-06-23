@@ -418,10 +418,48 @@
   .sb-hint b{color:var(--ink);font-weight:600}
   .sb-hint[hidden]{display:none}
 
+  /* ---------- BUDGET CALCULATOR (#cost) ---------- */
+  .calc{margin-top:42px;border-top:2px solid var(--ink);padding-top:26px}
+  .calc-head{margin-bottom:22px}
+  .calc-head h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.7rem);line-height:1.2;margin-top:8px}
+  .calc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:30px 48px;align-items:start}
+  .calc-field{margin-bottom:20px}
+  .calc-field > label,.calc-field > .lg{display:block;font-size:.74rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--clay);font-weight:600;margin-bottom:9px}
+  .calc-num{display:inline-flex;align-items:center;border:1.5px solid var(--line-2);border-radius:3px;overflow:hidden;background:var(--paper)}
+  .calc-num button{appearance:none;border:0;background:var(--paper-2);color:var(--ink);width:44px;height:46px;font-family:var(--fig);font-size:1.4rem;line-height:1;cursor:pointer;transition:background .15s,color .15s}
+  .calc-num button:hover{background:var(--clay);color:var(--paper)}
+  .calc-num input{width:62px;height:46px;border:0;background:transparent;text-align:center;font-family:var(--fig);font-size:1.2rem;color:var(--ink);font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .calc-num input::-webkit-outer-spin-button,.calc-num input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .calc-num:focus-within{outline:2px solid var(--clay);outline-offset:2px}
+  .seg-group{display:inline-flex;border:1.5px solid var(--ink);border-radius:3px;overflow:hidden;max-width:100%;flex-wrap:wrap}
+  .seg{position:relative;cursor:pointer;display:inline-flex}
+  .seg input{position:absolute;opacity:0;width:1px;height:1px}
+  .seg > span{display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 16px;font-size:.85rem;font-weight:600;color:var(--ink-2);background:var(--paper);transition:background .15s,color .15s}
+  .seg + .seg > span{border-left:1.5px solid var(--ink)}
+  .seg input:checked + span{background:var(--ink);color:var(--paper)}
+  .seg-group:focus-within{outline:2px solid var(--clay);outline-offset:2px}
+  .seg .rec{font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .seg input:checked + span .rec{color:#e9c98e}
+  .calc-result{padding:15px 0;border-bottom:1px solid var(--line)}
+  .calc-result:first-child{padding-top:0}
+  .calc-result .rl{font-size:.74rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+  .calc-result .ry{font-family:var(--fig);font-size:clamp(1.9rem,5.4vw,2.7rem);font-weight:400;color:var(--clay);line-height:1.04;margin-top:5px;font-variant-numeric:tabular-nums}
+  .calc-result .rb{font-family:var(--fig);font-size:1.02rem;color:var(--ink-2);margin-top:3px;font-variant-numeric:tabular-nums}
+  .calc-break{margin-top:16px}
+  .calc-break > summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;min-height:34px;font-size:.85rem;font-weight:600;color:var(--ink-2)}
+  .calc-break > summary::-webkit-details-marker{display:none}
+  .calc-break > summary:hover{color:var(--clay)}
+  .calc-break > summary:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+  .calc-brk-row{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px dotted var(--line-2);font-size:.92rem;color:var(--ink-2)}
+  .calc-brk-row .v{font-family:var(--fig);color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .calc-note{margin-top:20px;background:var(--verify-bg);color:var(--verify-ink);padding:12px 15px;border-radius:3px;font-size:.85rem;line-height:1.65}
+  .calc-note b{font-weight:700}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr;gap:24px}}
+
   /* ---------- PRINT (offline PDF) ---------- */
   @media print{
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .nav,.sos-fab,.sos-panel,.sos-backdrop,.toast,.band,.scroll-hint,.burger,.gd-chips,.chk-reset,.cp .ci,.savebar{display:none!important}
+    .nav,.sos-fab,.sos-panel,.sos-backdrop,.toast,.band,.scroll-hint,.burger,.gd-chips,.chk-reset,.cp .ci,.savebar,.calc{display:none!important}
     body{font-size:11.5px;line-height:1.5;background:#fff}
     .hero{min-height:auto;background:#fff!important;color:var(--ink);padding:0}
     .hero-inner{padding:0 0 14px}
@@ -1550,6 +1588,57 @@
     <p class="cost-foot"><b>+ ทางเลือกเช่ารถ+คนขับ (แนะนำ):</b> SUV ~¥1,200–1,500/วัน × ~4 วัน ÷ 4 คน ≈ <b>¥1,200–1,500/คน (6,000–7,500฿)</b> เพิ่มจากบัส ~¥900–1,100/คน แต่ปลอดภัย/ยืดหยุ่นกว่า</p>
     <p class="cost-foot"><b>+ ค่าเดินทางถึงพื้นที่ (แยก) <span class="est">⚠️</span>:</b> บินไทย→คุนหมิง ไป-กลับ ~8,000–18,000฿ + คุนหมิง→แชงกรีล่า (บิน ~6,000–7,200฿ / รถไฟตรง ~2,500–5,000฿)</p>
     <p class="cost-foot">ประมาณการบาทใช้ <b>1 ¥ ≈ 5 ฿</b> (เรตจริง มิ.ย. 2026 ~4.89 → จ่ายจริงถูกกว่าเล็กน้อย) · ราคาในจีนเปลี่ยนตามฤดู ควรตรวจสอบก่อนเดินทาง</p>
+
+    <div class="calc" id="calc">
+      <div class="calc-head">
+        <span class="kicker"><span class="kn">¥</span> เครื่องคิดงบ</span>
+        <h3>ปรับเป็นกลุ่มของคุณ</h3>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-controls">
+          <div class="calc-field">
+            <label for="calcPeople">จำนวนคน</label>
+            <div class="calc-num">
+              <button type="button" data-step="people" data-d="-1" aria-label="ลดจำนวนคน">−</button>
+              <input id="calcPeople" type="number" inputmode="numeric" min="1" max="20" step="1" value="4">
+              <button type="button" data-step="people" data-d="1" aria-label="เพิ่มจำนวนคน">+</button>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label for="calcNights">จำนวนคืน</label>
+            <div class="calc-num">
+              <button type="button" data-step="nights" data-d="-1" aria-label="ลดจำนวนคืน">−</button>
+              <input id="calcNights" type="number" inputmode="numeric" min="3" max="14" step="1" value="6">
+              <button type="button" data-step="nights" data-d="1" aria-label="เพิ่มจำนวนคืน">+</button>
+            </div>
+          </div>
+          <div class="calc-field">
+            <span class="lg" id="calcTransLbl">เดินทางในพื้นที่</span>
+            <div class="seg-group" role="radiogroup" aria-labelledby="calcTransLbl">
+              <label class="seg"><input type="radio" name="calcTrans" value="bus" checked><span>บัส/รถสาธารณะ</span></label>
+              <label class="seg"><input type="radio" name="calcTrans" value="car"><span>เช่ารถ+คนขับ<span class="rec">แนะนำ</span></span></label>
+            </div>
+          </div>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <div class="calc-result">
+            <div class="rl" id="calcPPLbl">งบต่อคน · หน้างาน</div>
+            <div class="ry" id="calcPP">—</div>
+            <div class="rb" id="calcPPb">—</div>
+          </div>
+          <div class="calc-result">
+            <div class="rl" id="calcGrpLbl">รวมทั้งกลุ่ม</div>
+            <div class="ry" id="calcGrp">—</div>
+            <div class="rb" id="calcGrpb">—</div>
+          </div>
+          <details class="calc-break">
+            <summary>ดูรายการแยก (ต่อคน) ▾</summary>
+            <div id="calcBreak"></div>
+          </details>
+        </div>
+      </div>
+      <p class="calc-note"><span class="est">⚠️ ประมาณการ</span> ที่พักคิดต่อคน/คืน · อาหารต่อคน/วัน · ค่าเข้า+eSIM+เบ็ดเตล็ดคงที่ต่อคน · เช่ารถคิดเป็น SUV ¥1,200–1,500/วัน ÷ จำนวนคน (~คืน−2 วันขับจริง) · <b>ไม่รวมตั๋วเครื่องบินระหว่างประเทศ</b> · 1¥≈5฿</p>
+    </div>
   </div>
 </section>
 
@@ -1830,6 +1919,53 @@
         }).catch(function(){});
       });
     }
+  })();
+
+  /* ---------- interactive budget calculator (#cost) — model reproduces the ledger total at the defaults (4 ppl / 6 nights / bus = ¥1,975–3,945) ---------- */
+  (function(){
+    var pe=document.getElementById('calcPeople'), ne=document.getElementById('calcNights');
+    if(!pe||!ne)return;
+    /* per-person ¥ ranges [lo,hi] derived from the #cost ledger */
+    var R={lodge:[650/6,1300/6],food:[450/7,850/7],ent:[230,600],esim:[195,195],misc:[150,350],bus:[300,650],car:[1200,1500]};
+    var ppEl=document.getElementById('calcPP'),ppbEl=document.getElementById('calcPPb'),
+        grpEl=document.getElementById('calcGrp'),grpbEl=document.getElementById('calcGrpb'),
+        ppLbl=document.getElementById('calcPPLbl'),grpLbl=document.getElementById('calcGrpLbl'),
+        brk=document.getElementById('calcBreak');
+    function clampNum(el,def,lo,hi){var v=parseInt(el.value,10);if(isNaN(v))v=def;return Math.max(lo,Math.min(hi,v));}
+    function n(x){return Math.round(x).toLocaleString('en-US');}
+    function yuan(lo,hi){return '¥'+n(Math.round(lo/5)*5)+'–'+n(Math.round(hi/5)*5);}
+    function baht(lo,hi){return '≈ ฿'+n(Math.round(lo*5/25)*25)+'–'+n(Math.round(hi*5/25)*25);}
+    function transport(){var r=document.querySelector('input[name="calcTrans"]:checked');return r?r.value:'bus';}
+    function calc(){
+      var ppl=clampNum(pe,4,1,20), nights=clampNum(ne,6,3,14), days=nights+1,
+          car=transport()==='car', carDays=Math.max(1,nights-2);
+      var rows=[
+        ['ที่พัก '+nights+' คืน',[R.lodge[0]*nights,R.lodge[1]*nights]],
+        ['อาหาร '+days+' วัน',[R.food[0]*days,R.food[1]*days]],
+        ['ค่าเข้าชม',R.ent],
+        [car?'เช่ารถ+คนขับ':'รถ/บัสในพื้นที่', car?[R.car[0]*carDays/ppl,R.car[1]*carDays/ppl]:R.bus],
+        ['eSIM',R.esim],
+        ['เบ็ดเตล็ด',R.misc]
+      ];
+      var ppLo=0,ppHi=0,html='';
+      rows.forEach(function(r){ppLo+=r[1][0];ppHi+=r[1][1];html+='<div class="calc-brk-row"><span>'+r[0]+'</span><span class="v">'+yuan(r[1][0],r[1][1])+'</span></div>';});
+      ppEl.textContent=yuan(ppLo,ppHi); ppbEl.textContent=baht(ppLo,ppHi);
+      grpEl.textContent=yuan(ppLo*ppl,ppHi*ppl); grpbEl.textContent=baht(ppLo*ppl,ppHi*ppl);
+      if(ppLbl)ppLbl.textContent='งบต่อคน · หน้างาน · '+nights+' คืน';
+      if(grpLbl)grpLbl.textContent='รวมทั้งกลุ่ม · '+ppl+' คน';
+      brk.innerHTML=html;
+    }
+    Array.prototype.slice.call(document.querySelectorAll('.calc-num button[data-step]')).forEach(function(b){
+      b.addEventListener('click',function(){
+        var people=b.getAttribute('data-step')==='people';
+        var el=people?pe:ne, lo=people?1:3, hi=people?20:14, def=people?4:6;
+        el.value=Math.max(lo,Math.min(hi,clampNum(el,def,lo,hi)+parseInt(b.getAttribute('data-d'),10)));
+        calc();
+      });
+    });
+    pe.addEventListener('input',calc); ne.addEventListener('input',calc);
+    Array.prototype.slice.call(document.querySelectorAll('input[name="calcTrans"]')).forEach(function(r){r.addEventListener('change',calc);});
+    calc();
   })();
 </script>
 
