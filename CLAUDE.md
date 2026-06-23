@@ -4,14 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Thai-language, editorial/magazine-style travel itinerary for **เมยหลี่เสวี่ยซาน (Meili Snow Mountain / 梅里雪山 / Kawagebo)**, Yunnan, China — a 7-day family trip plan (15–21 Nov 2026). It is a **static site with no build step and no framework**: the whole site is a single self-contained `index.html` with inline `<style>` and inline `<script>`. The only third-party library is **Leaflet** (loaded from CDN) for the interactive route map, which degrades gracefully to an inline SVG when it can't load.
+A Thai-language, editorial/magazine-style travel itinerary for **เมยหลี่เสวี่ยซาน (Meili Snow Mountain / 梅里雪山 / Kawagebo)**, Yunnan, China — a 7-day family trip plan (15–21 Nov 2026). It is a **static site with no build step and no framework**: the whole site is a single self-contained `index.html` with inline `<style>` and inline `<script>`. The only third-party library is **Leaflet** (loaded from CDN) for the interactive route map, which degrades gracefully to an inline SVG when it can't load. The site is also an **installable, offline-capable PWA** (service worker + web app manifest) so the whole guide works without signal on the mountain.
 
 ## Running & deploying
 
 - **Run locally:** open `index.html` directly in a browser (double-click). No server, install, or build is needed.
 - **Preview with a server (optional):** `python -m http.server 8765` from the repo root, then open `http://localhost:8765/` — needed only if you want `localStorage`/clipboard to behave exactly as on the live HTTPS site.
-- **Offline PDF:** the browser Print dialog auto-expands all accordions (`beforeprint` hook + `@media print`), so "Save as PDF" yields a complete offline field guide.
-- **Deploy:** GitHub Pages serves `index.html` from the repo root at https://tayakorn221.github.io/meili-trip/. Edits to that file = edits to the published site. GitHub Pages requires the entry file to be named `index.html`.
+- **Offline PDF:** the browser Print dialog auto-expands all accordions (`beforeprint` hook + `@media print`), so "Save as PDF" yields a complete offline field guide. The **"เซฟเป็น PDF"** button in the `overview` save-bar just calls `window.print()` to make this discoverable.
+- **Offline / installable:** a service worker (`sw.js`) caches the guide for offline use, and `manifest.json` makes it installable ("Add to Home Screen"). The service worker only runs in a **secure context** — the live HTTPS site or `localhost` (use the preview server), **not** `file://`.
+- **Deploy:** GitHub Pages serves the repo root at https://tayakorn221.github.io/meili-trip/. Edits to `index.html` = edits to the published site; the PWA files (`manifest.json`, `sw.js`, the `icon-*.png` / `apple-touch-icon.png`) are now part of the published site too. GitHub Pages requires the entry file to be named `index.html`.
 - There is no test, lint, or CI tooling in the repo.
 
 ## Files
@@ -19,6 +20,9 @@ A Thai-language, editorial/magazine-style travel itinerary for **เมยหล
 - `index.html` — the entire site and the GitHub Pages entry point. Content is organized into **three nav groups**, sections in linear order: **วางแผน** (`overview` + inline SVG route map, `getting-there`, `visa`, `money`, `connectivity`, `packing`) · **ระหว่างทาง** (`itinerary`, `transport`, `accommodation`, `food`, `attractions`, `altitude`) · **อ้างอิงด่วน** (`emergency`, `phrases`, `weather`, `cost`, `warnings`). Estimate/volatile items use the ⚠️ badge styled by `--verify-bg` / `--verify-ink`.
 - `docs/content-plan.md` — **content source-of-truth.** All copy is researched + reviewed here first (verified links + ⚠️ + check-date + source), then converted into `index.html`. Same 3-group structure.
 - `og-image.png` — 1200×630 social-share image referenced by the Open Graph / Twitter meta tags in the `index.html` head.
+- `manifest.json` — PWA web app manifest. Thai `name`/`short_name`; `start_url`/`scope` are **relative `./`** so it resolves under the `/meili-trip/` Pages subpath (not the domain root); `display: standalone`; paper `theme_color`/`background_color`; three icons incl. one `maskable`. Linked from the `index.html` head.
+- `sw.js` — service worker (offline cache). Versioned cache `meili-<VERSION>`; **HTML is network-first** (fresh content after future deploys, falls back to the cached shell offline), **everything else (Google Fonts, Leaflet, images, OSM tiles) is stale-while-revalidate** (any map region you viewed online stays available offline). **Bump `VERSION` when you change cached assets** — old caches are evicted on `activate`.
+- `icon-192.png` / `icon-512.png` / `icon-maskable-512.png` / `apple-touch-icon.png` — home-screen / install icons (clay dawn sky + twin cream Meili peaks + gold sunrise; palette matches the `:root` tokens). The 192 doubles as the favicon.
 
 (`.claude/` is git-ignored local tooling — e.g. a `launch.json` static-server config for previewing — and is never part of the deployed site.)
 
@@ -26,7 +30,7 @@ A Thai-language, editorial/magazine-style travel itinerary for **เมยหล
 
 ## Architecture
 
-The site is one self-contained file. The design system lives in an inline `<style>` (a token `:root` block plus nav/hero/section CSS) and all behavior lives in a single inline `<script>` at the end of `<body>`. External assets are all from CDNs: Google Fonts, a few remote images (hero/photo bands), and **Leaflet (CSS+JS) + OpenStreetMap tiles** for the interactive route map. Everything else is inline.
+The site is one self-contained file. The design system lives in an inline `<style>` (a token `:root` block plus nav/hero/section CSS) and all page behavior lives in a single inline `<script>` at the end of `<body>` (the sole exception is `sw.js`, the service worker, which the platform requires to be its own top-level file). External assets are all from CDNs: Google Fonts, a few remote images (hero/photo bands), and **Leaflet (CSS+JS) + OpenStreetMap tiles** for the interactive route map. Everything else is inline.
 
 ### Design system (CSS custom properties in `:root`)
 
@@ -46,6 +50,16 @@ The site is one self-contained file. The design system lives in an inline `<styl
 6. **Print:** a `beforeprint` handler force-opens every `<details>` (`afterprint` restores) so `@media print` exports the full page to PDF for offline use.
 
 **Couplings to keep in sync:** (a) each `.dropdown a href="#x"` must match a `<section id="x">` — adding/renaming a section means updating both; (b) accordions + the itinerary use native `<details>` (consistent + print-friendly); (c) `prefers-reduced-motion` zeroes transitions and interactive elements share one `:focus-visible` outline.
+
+### Offline / PWA (installable field guide)
+
+Makes the whole guide usable offline on the remote mountain (the original "ออฟไลน์ได้บนภูเขา" goal). Reuses the existing tokens — no new colors or fonts.
+
+- **`manifest.json` + head tags** make it installable. `theme_color`/`background_color` are paper to match the sticky nav and splash; `apple-touch-icon` + `apple-mobile-web-app-*` meta cover iOS. Icons live at the repo root.
+- **`sw.js` (service worker):** precaches the app-shell (`SHELL` array — same-origin files) on install, plus a best-effort precache of the cross-origin CDN assets (Google Fonts CSS, Leaflet CSS/JS). Fetch strategy: **network-first for HTML** (no stale page after deploys), **stale-while-revalidate for everything else incl. OSM tiles.** Old caches are deleted on `activate`; `skipWaiting` + `clients.claim` apply updates promptly.
+- **Save / install UI** = the `.savebar` at the end of the `overview` section: a primary **"เซฟเป็น PDF"** button (`#savePdfBtn` → `window.print()`, which fires the existing `beforeprint` accordion-expand) + a ghost **"ติดตั้งเป็นแอป"** button (`#installBtn`, revealed only when the browser fires `beforeinstallprompt`; iOS shows the manual `#iosHint` instead). `.savebar` is hidden in `@media print`.
+- **IIFE wiring (same end-of-body script):** registers `sw.js` on `load` with a one-time "saved offline" toast (guarded by `localStorage` flag `meili-offline-ready`); captures `beforeinstallprompt`; handles `appinstalled`; shows the iOS hint when on iOS Safari and not already standalone.
+- **Maintenance gotchas:** (1) **bump `VERSION` in `sw.js`** when cached assets change; (2) keep `manifest.json`/icon paths **relative** (Pages **subpath**, not domain root); (3) add any new must-work-offline top-level asset to the `SHELL` list in `sw.js`; (4) the SW needs a **secure context** — test via the preview server / live site, never `file://`.
 
 ## Content & meta conventions
 

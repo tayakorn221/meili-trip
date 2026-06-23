@@ -22,6 +22,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Noto+Serif+Thai:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<!-- PWA : installable offline field guide -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f4f0e7">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="application-name" content="เมยหลี่">
+<meta name="apple-mobile-web-app-title" content="เมยหลี่">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
   :root{
     --paper:#f4f0e7;
@@ -392,10 +402,26 @@
 
   @media(max-width:860px){.scroll-hint{display:block}.section{padding:52px 0}.hero{min-height:84vh}}
 
+  /* ---------- SAVE / INSTALL BAR (PWA offline) ---------- */
+  .savebar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:46px;padding:20px 22px;background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--clay);border-radius:3px}
+  .savebar .sb-copy{flex:1 1 260px;min-width:0}
+  .savebar .sb-copy b{display:block;font-family:var(--serif);font-weight:600;font-size:1.08rem;color:var(--ink)}
+  .savebar .sb-copy span{display:block;color:var(--ink-2);font-size:.9rem;margin-top:2px}
+  .sb-actions{display:flex;flex-wrap:wrap;gap:10px}
+  .sb-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 20px;font-family:var(--sans);font-weight:600;font-size:.86rem;letter-spacing:.4px;border:1.5px solid var(--ink);border-radius:2px;background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;transition:background .2s,color .2s,border-color .2s}
+  .sb-btn svg{width:17px;height:17px;flex:0 0 auto}
+  .sb-btn.primary{background:var(--ink);color:var(--paper)}
+  .sb-btn.primary:hover{background:var(--clay);border-color:var(--clay)}
+  .sb-btn.ghost:hover{background:var(--ink);color:var(--paper)}
+  .sb-btn[hidden]{display:none}
+  .sb-hint{flex-basis:100%;margin:2px 0 0;color:var(--ink-2);font-size:.86rem}
+  .sb-hint b{color:var(--ink);font-weight:600}
+  .sb-hint[hidden]{display:none}
+
   /* ---------- PRINT (offline PDF) ---------- */
   @media print{
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .nav,.sos-fab,.sos-panel,.sos-backdrop,.toast,.band,.scroll-hint,.burger,.gd-chips,.chk-reset,.cp .ci{display:none!important}
+    .nav,.sos-fab,.sos-panel,.sos-backdrop,.toast,.band,.scroll-hint,.burger,.gd-chips,.chk-reset,.cp .ci,.savebar{display:none!important}
     body{font-size:11.5px;line-height:1.5;background:#fff}
     .hero{min-height:auto;background:#fff!important;color:var(--ink);padding:0}
     .hero-inner{padding:0 0 14px}
@@ -540,6 +566,24 @@
         <a class="maplink" href="https://www.amap.com/search?query=明永冰川" target="_blank" rel="noopener noreferrer">④ หมิงหย่ง</a>
       </div>
     </div>
+
+    <aside class="savebar" aria-label="บันทึกคู่มือไว้ใช้ออฟไลน์">
+      <div class="sb-copy">
+        <b>พกคู่มือนี้ติดตัว</b>
+        <span>เซฟไว้อ่านได้แม้ไม่มีสัญญาณบนภูเขา — บันทึกเป็น PDF หรือติดตั้งเป็นแอปบนมือถือ</span>
+      </div>
+      <div class="sb-actions">
+        <button type="button" class="sb-btn primary" id="savePdfBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 11l4 4 4-4"/><path d="M5 21h14"/></svg>
+          เซฟเป็น PDF
+        </button>
+        <button type="button" class="sb-btn ghost" id="installBtn" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="M8.5 9.5l3.5 3.5 3.5-3.5"/><rect x="4" y="16" width="16" height="5" rx="1"/></svg>
+          ติดตั้งเป็นแอป
+        </button>
+      </div>
+      <p class="sb-hint" id="iosHint" hidden>ติดตั้งบน iPhone: แตะปุ่ม <b>แชร์</b> แล้วเลือก <b>“เพิ่มไปยังหน้าจอโฮม”</b></p>
+    </aside>
   </div>
 </section>
 
@@ -1740,6 +1784,52 @@
       Array.prototype.slice.call(document.querySelectorAll('details')).forEach(function(d){printState.push([d,d.open]);d.open=true;});
     });
     window.addEventListener('afterprint',function(){printState.forEach(function(p){p[0].open=p[1];});});
+
+    /* ---------- PWA : save-as-PDF, install prompt, offline service worker ---------- */
+    var savePdfBtn=document.getElementById('savePdfBtn');
+    if(savePdfBtn)savePdfBtn.addEventListener('click',function(){window.print();});
+
+    /* Add-to-Home-Screen (Chrome/Edge/Android): reveal button when the browser offers it */
+    var installBtn=document.getElementById('installBtn');
+    var deferredPrompt=null;
+    window.addEventListener('beforeinstallprompt',function(e){
+      e.preventDefault();deferredPrompt=e;
+      if(installBtn)installBtn.hidden=false;
+    });
+    if(installBtn)installBtn.addEventListener('click',function(){
+      if(!deferredPrompt)return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(){deferredPrompt=null;installBtn.hidden=true;});
+    });
+    window.addEventListener('appinstalled',function(){
+      deferredPrompt=null;if(installBtn)installBtn.hidden=true;showToast('ติดตั้งแอปแล้ว ✓');
+    });
+
+    /* iOS Safari has no beforeinstallprompt — show the manual hint (unless already installed) */
+    try{
+      var isiOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+      var standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+      var iosHint=document.getElementById('iosHint');
+      if(isiOS&&!standalone&&iosHint)iosHint.hidden=false;
+    }catch(err){}
+
+    /* register service worker — caches the guide for offline use on the mountain */
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',function(){
+        navigator.serviceWorker.register('sw.js').then(function(){
+          function announceOffline(){
+            try{
+              if(!localStorage.getItem('meili-offline-ready')){
+                localStorage.setItem('meili-offline-ready','1');
+                showToast('บันทึกคู่มือไว้ใช้ออฟไลน์แล้ว ✓');
+              }
+            }catch(e){}
+          }
+          if(navigator.serviceWorker.controller)announceOffline();
+          else navigator.serviceWorker.addEventListener('controllerchange',announceOffline);
+        }).catch(function(){});
+      });
+    }
   })();
 </script>
 

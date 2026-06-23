@@ -1,0 +1,19 @@
+{
+  "name": "เมยหลี่เสวี่ยซาน — แผนเที่ยวครอบครัว 7 วัน",
+  "short_name": "เมยหลี่",
+  "description": "คู่มือเที่ยวเมยหลี่เสวี่ยซาน (梅里雪山) 7 วัน 15–21 พ.ย. 2026 — ใช้ได้แม้ไม่มีสัญญาณบนภูเขา",
+  "lang": "th",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f0e7",
+  "theme_color": "#f4f0e7",
+  "categories": ["travel", "navigation"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
