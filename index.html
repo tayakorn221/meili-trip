@@ -144,6 +144,7 @@
   .routemap.maplive > svg{display:none}
   .leaflet-container{background:var(--paper-2)!important;font-family:var(--sans)!important}
   .rm-mk{background:transparent!important;border:0!important;box-shadow:none!important;color:#fff;font-family:var(--fig);font-weight:600;font-size:13px;text-align:center}
+  .leaflet-popup-content .rm-pop-leg{display:block;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);color:var(--clay);font-weight:600}
   @media(max-width:620px){.routemap-live{height:340px}}
   .rm-route{fill:none;stroke:var(--clay);stroke-width:2.5;stroke-dasharray:7 6;opacity:.85}
   .rm-pin{fill:var(--clay)}
@@ -1850,10 +1851,13 @@
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'&copy; OpenStreetMap contributors'}).addTo(mp);
             mp.fitBounds(bounds,{padding:[30,30]});            /* set view BEFORE adding vectors so they project at the right size */
             L.polyline(ll,{color:'#9a3b27',weight:3,dashArray:'7 7',opacity:.85}).addTo(mp);
+            /* per-leg distance/time folded into each origin stop's popup — keeps the small/mobile map uncluttered; the SVG schematic still shows every leg always-visible (and prints that way) */
+            var legOut=['แชงกรีล่า · บิน ~1ชม. / รถไฟตรง ~4.5–6ชม.','เฟยไหลซื่อ · ~182กม. ขับ ~4–4.5ชม. (ช่องเขาไป๋หม่า 4,290ม.)','หมิงหย่ง · ~40กม. ~1ชม.'];
             P.forEach(function(p,i){
+              var html='<b>'+p[2]+'</b><br>'+p[3]+(legOut[i]?'<span class="rm-pop-leg">→ '+legOut[i]+'</span>':'');
               L.circleMarker([p[0],p[1]],{radius:12,color:'#fff',weight:2,fillColor:'#9a3b27',fillOpacity:1}).addTo(mp)
                 .bindTooltip(String(i+1),{permanent:true,direction:'center',className:'rm-mk'})
-                .bindPopup('<b>'+p[2]+'</b><br>'+p[3]);
+                .bindPopup(html,{maxWidth:240});
             });
             setTimeout(function(){mp.invalidateSize(false);mp.fitBounds(bounds,{padding:[30,30]});},250);
           }catch(e){rm.classList.remove('maplive');}
